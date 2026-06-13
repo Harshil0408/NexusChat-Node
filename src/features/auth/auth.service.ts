@@ -103,8 +103,6 @@ export class AuthService {
   ): Promise<AuthResponse | TwoFactorRequired> {
     const user = await this.repo.findByPhone(data.phone_number);
 
-    console.log("user ==> ", user);
-
     const failedAttempts = await this.repo.countRecentFailedAttempts(
       data.phone_number,
     );
@@ -188,16 +186,16 @@ export class AuthService {
         two_factor_enabled: user.two_factor_enabled,
         avatar_url: user.avatar_url,
         bio: user.bio,
-        created_at: user.created_at,
         custom_status: user.custom_status,
-        deleted_at: user.deleted_at ? new Date(user.deleted_at) : (null as any),
         email: user.email,
         is_active: user.is_active,
         is_online: user.is_online,
         is_verified: user.is_verified,
-        last_seen: user.last_seen,
         otp_verified: user.otp_verified,
         status_emoji: user.status_emoji,
+        last_seen: user.last_seen.toISOString(),
+        created_at: user.created_at.toISOString(),
+        deleted_at: user.deleted_at ? user.deleted_at.toISOString() : null,
       },
       tokens,
     } as any;

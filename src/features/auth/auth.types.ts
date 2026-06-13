@@ -35,14 +35,16 @@ export interface AuthResponse {
     bio: string | null;
     status_emoji: string | null;
     custom_status: unknown;
-    last_seen: Date;
+
+    last_seen: string;
+    created_at: string;
+    deleted_at: string | null;
+
     is_online: boolean;
     is_verified: boolean;
     is_active: boolean;
     role: "user" | "admin";
     two_factor_enabled: boolean;
-    created_at: Date;
-    deleted_at: Date;
     otp_verified: boolean;
   };
   tokens: TokenPair;
