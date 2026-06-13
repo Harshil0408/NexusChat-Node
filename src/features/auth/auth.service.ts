@@ -182,11 +182,23 @@ export class AuthService {
         username: user.username,
         full_name: user.full_name,
         phone_number: user.phone_number,
-        role: user.role as string,
+        role: user.role as "admin" | "user",
         two_factor_enabled: user.two_factor_enabled,
+        avatar_url: user.avatar_url,
+        bio: user.bio,
+        custom_status: user.custom_status,
+        email: user.email,
+        is_active: user.is_active,
+        is_online: user.is_online,
+        is_verified: user.is_verified,
+        otp_verified: user.otp_verified,
+        status_emoji: user.status_emoji,
+        last_seen: user.last_seen.toISOString(),
+        created_at: user.created_at.toISOString(),
+        deleted_at: user.deleted_at ? user.deleted_at.toISOString() : null,
       },
       tokens,
-    };
+    } as any;
   }
 
   async refreshTokens(
