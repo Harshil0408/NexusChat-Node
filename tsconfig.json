@@ -1,0 +1,55 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "commonjs",
+    "lib": [
+      "ES2020"
+    ],
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "sourceMap": true,
+    // "baseUrl": "./src",
+    "types": [
+      "node"
+    ],
+    // "paths": {
+    //   "@/*": ["src/*"]
+    // }
+    "paths": {
+      // add ./src from baseUrl
+      "@app/*": [
+        "./src/app/*"
+      ],
+      "@config/*": [
+        "./src/config/*"
+      ],
+      "@db/*": [
+        "./src/db/*"
+      ],
+      "@features/*": [
+        "./src/features/*"
+      ],
+      "@jobs/*": [
+        "./src/jobs/*"
+      ],
+      "@middlewares/*": [
+        "./src/middlewares/*"
+      ],
+      "@shared/*": [
+        "./src/shared/*"
+      ],
+    }
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}
