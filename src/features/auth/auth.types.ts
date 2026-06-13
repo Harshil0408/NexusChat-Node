@@ -27,11 +27,23 @@ export interface TokenPair {
 export interface AuthResponse {
   user: {
     id: string;
+    phone_number: string;
+    email: string | null;
     username: string;
     full_name: string;
-    phone_number: string;
-    role: string;
+    avatar_url: string | null;
+    bio: string | null;
+    status_emoji: string | null;
+    custom_status: unknown;
+    last_seen: Date;
+    is_online: boolean;
+    is_verified: boolean;
+    is_active: boolean;
+    role: "user" | "admin";
     two_factor_enabled: boolean;
+    created_at: Date;
+    deleted_at: Date;
+    otp_verified: boolean;
   };
   tokens: TokenPair;
 }
