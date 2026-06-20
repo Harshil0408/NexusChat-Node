@@ -120,7 +120,7 @@ export class AuthService {
         success: false,
         ...meta,
       });
-      throw new UnauthorizedError();
+      throw new ValidationError("Invalid credentials");
     }
 
     const passwordMatch = await bcrypt.compare(data.password, user.password);
@@ -158,7 +158,7 @@ export class AuthService {
           success: false,
           ...meta,
         });
-        throw new AppError("Invalid OTP code", 401, "INVALID_OTP");
+        throw new AppError("Invalid OTP code", 400, "INVALID_OTP");
       }
     }
 

@@ -50,27 +50,26 @@ export class AuthController {
     );
   });
 
-  refreshToken = asyncHandler(async (req: Request, res: Response) => {
-    const token = req.cookies?.refresh_token ?? req.body?.refresh_token;
-    if (!token) {
-      res.status(401).json({
-        success: false,
-        error: { message: "No refresh token", code: "UNAUTHORIZED" },
-      });
-      return;
-    }
+  refreshToken = asyncHandler(async (req, res) => {
+    const token = req.cookies?.refresh_token;
 
-    const meta = { ip_address: req.ip, user_agent: req.headers["user-agent"] };
+    const meta = {
+      ip_address: req.ip,
+      user_agent: req.headers["user-agent"],
+    };
+
     const tokens = await this.service.refreshTokens(token, meta);
 
     res.cookie("refresh_token", tokens.refreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
+      maxAge: 30 * 24 * 60 * 60 * 1000,
     });
 
-    sendSuccess(res, { access_token: tokens.accessToken });
+    sendSuccess(res, {
+      access_token: tokens.accessToken,
+    });
   });
 
   logout = asyncHandler(async (req: Request, res: Response) => {
@@ -87,11 +86,14 @@ export class AuthController {
   });
 
   setup2FA = asyncHandler(async (req: Request, res: Response) => {
+    console.log("req", req);
     const result = await this.service.setup2FA(req.user!.userId);
     sendSuccess(res, result);
   });
 
   verify2FA = asyncHandler(async (req: Request, res: Response) => {
+    console.log("req.user.userId", req.user!.userId);
+    console.log("req.body.otp_code", req.body.otp_code);
     await this.service.verify2FA(req.user!.userId, req.body.otp_code);
     sendSuccess(res, { message: "2FA enabled successfully" });
   });
