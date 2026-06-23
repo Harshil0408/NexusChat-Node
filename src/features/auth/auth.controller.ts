@@ -86,14 +86,11 @@ export class AuthController {
   });
 
   setup2FA = asyncHandler(async (req: Request, res: Response) => {
-    console.log("req", req);
     const result = await this.service.setup2FA(req.user!.userId);
     sendSuccess(res, result);
   });
 
   verify2FA = asyncHandler(async (req: Request, res: Response) => {
-    console.log("req.user.userId", req.user!.userId);
-    console.log("req.body.otp_code", req.body.otp_code);
     await this.service.verify2FA(req.user!.userId, req.body.otp_code);
     sendSuccess(res, { message: "2FA enabled successfully" });
   });
