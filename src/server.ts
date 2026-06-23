@@ -1,23 +1,29 @@
 import "dotenv/config";
+import http from "http";
 import app from "./app";
-import { env } from "./config/env";
-import { connectDB } from "./db/pool";
-import { logger } from "./shared/logger";
-import dotenv from "dotenv";
-
-dotenv.config();
+import { env } from "@config/env";
+import { connectDB } from "@db/pool";
+import { logger } from "@shared/logger";
+import { initSocket } from "./socket/socket";
 
 async function bootstrap() {
   await connectDB();
 
-  const server = app.listen(env.PORT, () => {
+  // Create HTTP server from Express app
+  const httpServer = http.createServer(app);
+
+  // Attach Socket.io to HTTP server
+  initSocket(httpServer);
+
+  httpServer.listen(env.PORT, () => {
     logger.info(`Server running on port ${env.PORT} [${env.NODE_ENV}]`);
+    logger.info(`Socket.io ready`);
   });
 
-  const shutdown = async (signal: string) => {
-    logger.info(`${signal} received, shutting down gracefully`);
-    server.close(() => {
-      logger.info("HTTP server closed");
+  const shutdown = (signal: string) => {
+    logger.info(`${signal} received, shutting down`);
+    httpServer.close(() => {
+      logger.info("Server closed");
       process.exit(0);
     });
   };
